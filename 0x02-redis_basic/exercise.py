@@ -8,11 +8,13 @@ from typing import Any, Callable, Optional, Union
 
 
 def count_calls(method: Callable) -> Callable:
-    """ Decorator for Cache class methods that track call count.
+    """ Decorator for Cache class methods that
+    track call count.
     """
     @wraps(method)
     def wrapper(self: Any, *args, **kwargs) -> str:
-        """ Wraps the called method and adds its call count to redis before execution.
+        """ Wraps the called method and adds its call
+        count to redis before execution.
         """
         self._redis.incr(method.__qualname__)
         return method(self, *args, **kwargs)
@@ -24,7 +26,8 @@ def call_history(method: Callable) -> Callable:
     """
     @wraps(method)
     def wrapper(self: Any, *args) -> str:
-        """ Wraps a called method, tracks its passed argument by storing them to redis.
+        """ Wraps a called method, tracks its passed
+       argument by storing them to redis.
         """
         self._redis.rpush(f'{method.__qualname__}:inputs', str(args))
         output = method(self, *args)
